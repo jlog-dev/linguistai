@@ -50,7 +50,6 @@ export async function playAudio(base64Audio: string, sampleRate = 24000): Promis
     source.connect(audioContext.destination);
     source.start();
   } catch (error) {
-    console.error("Failed to play audio", error);
     throw error;
   }
 }

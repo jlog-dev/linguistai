@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Volume2, Loader2, Eye, EyeOff } from 'lucide-react';
-import { playAudio } from '../utils/audioUtils';
-import { generateSpeech } from '@/services/qianwenService';
 
 interface ReadingViewProps {
   title: string;
@@ -14,19 +12,9 @@ const ReadingView: React.FC<ReadingViewProps> = ({ title, frenchText, englishTra
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handlePlayAudio = async () => {
-    if (isPlaying) return;
-    setIsPlaying(true);
-    try {
-      const base64 = await generateSpeech(frenchText);
-      await playAudio(base64);
-    } catch (err) {
-      console.error(err);
-      alert("Could not generate audio at this time.");
-    } finally {
-      setIsPlaying(false);
-    }
+   // show alert that this feature is not implemented yet
+   alert("This feature is not implemented yet");
   };
-
   return (
     <div className="animate-fade-in space-y-8">
       <div className="flex justify-between items-start border-b border-slate-100 pb-4">

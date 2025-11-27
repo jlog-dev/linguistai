@@ -1,23 +1,13 @@
 import React, { useState } from 'react';
 import { VocabularyItem } from '../types';
 import { Volume2, Loader2 } from 'lucide-react';
-import { generateSpeech } from '../services/geminiService';
-import { playAudio } from '../utils/audioUtils';
 
 const VocabCard: React.FC<{ item: VocabularyItem }> = ({ item }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const playWord = async () => {
-    if (isPlaying) return;
-    setIsPlaying(true);
-    try {
-      const base64 = await generateSpeech(item.word);
-      await playAudio(base64);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsPlaying(false);
-    }
+    // show alert that this feature is not implemented yet
+    alert("This feature is not implemented yet");
   };
 
   return (

@@ -21,7 +21,6 @@ const App: React.FC = () => {
       setMaterial(data);
       setState(AppState.LEARNING);
     } catch (error) {
-      console.error(error);
       setState(AppState.ERROR);
       setErrorMsg("Failed to generate content. Please try a different topic or check your API key.");
     }
