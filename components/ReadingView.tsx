@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Volume2, Loader2, Eye, EyeOff } from 'lucide-react';
 import { playAudio } from '../utils/audioUtils';
-import { generateSpeech } from '../services/geminiService';
+import { generateSpeech } from '@/services/qianwenService';
 
 interface ReadingViewProps {
   title: string;
   frenchText: string;
-  translation: string;
+  englishTranslation: string;
 }
 
-const ReadingView: React.FC<ReadingViewProps> = ({ title, frenchText, translation }) => {
+const ReadingView: React.FC<ReadingViewProps> = ({ title, frenchText, englishTranslation }) => {
   const [showTranslation, setShowTranslation] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -60,7 +60,7 @@ const ReadingView: React.FC<ReadingViewProps> = ({ title, frenchText, translatio
         
         {showTranslation ? (
           <p className="text-slate-600 leading-relaxed animate-fade-in">
-            {translation}
+            {englishTranslation}
           </p>
         ) : (
           <div className="h-24 flex items-center justify-center bg-slate-100 rounded-lg border-2 border-dashed border-slate-200 text-slate-400">

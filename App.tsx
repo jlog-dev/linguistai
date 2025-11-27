@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { LearningMaterial, ProficiencyLevel, AppState, Tab } from './types';
-import { generateLearningContent } from './services/geminiService';
 import InputForm from './components/InputForm';
 import ReadingView from './components/ReadingView';
 import VocabCard from './components/VocabCard';
 import QuizView from './components/QuizView';
 import { Book, GraduationCap, BrainCircuit, RotateCcw } from 'lucide-react';
+import { generateLearningContentFromQwen } from './services/qianwenService';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>(AppState.SETUP);
@@ -17,7 +17,7 @@ const App: React.FC = () => {
     setState(AppState.LOADING);
     setErrorMsg('');
     try {
-      const data = await generateLearningContent(topic, level);
+      const data = await generateLearningContentFromQwen(topic, level);
       setMaterial(data);
       setState(AppState.LEARNING);
     } catch (error) {
@@ -88,7 +88,6 @@ const App: React.FC = () => {
 
         {state === AppState.LEARNING && material && (
           <div className="w-full max-w-5xl animate-fade-in flex flex-col md:flex-row gap-6 items-start">
-            
             {/* Sidebar Navigation (Desktop) / Top Bar (Mobile) */}
             <nav className="w-full md:w-64 bg-white rounded-xl shadow-sm border border-slate-200 p-2 flex md:flex-col gap-1 sticky top-20">
               <button
@@ -121,11 +120,11 @@ const App: React.FC = () => {
                 <ReadingView 
                   title={material.title} 
                   frenchText={material.frenchText} 
-                  translation={material.englishTranslation} 
+                  englishTranslation={material.englishTranslation} 
                 />
               )}
 
-              {activeTab === 'vocab' && (
+              {activeTab === 'vocab' && material?.vocabulary && (
                 <div className="animate-fade-in">
                   <h2 className="text-2xl font-bold text-slate-800 mb-6">Key Vocabulary</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
