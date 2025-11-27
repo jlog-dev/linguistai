@@ -1,0 +1,5 @@
+{
+  "name": "LinguistAI - French Tutor",
+  "description": "A personalized French learning assistant that generates texts, vocabulary lists, pronunciations, and quizzes based on your proficiency level and chosen topic.",
+  "requestFramePermissions": []
+}
