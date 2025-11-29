@@ -1,4 +1,4 @@
-import { generateSpeechFromMiniMax } from '@/services/minimaxService';
+import { generateSpeechFromMiniMax } from '@/src/services/minimaxService';
 import { Loader2, Volume2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { VocabularyItem } from '../types';

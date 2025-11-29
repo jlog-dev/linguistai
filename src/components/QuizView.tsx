@@ -1,6 +1,6 @@
+import { ArrowRight, CheckCircle, HelpCircle, XCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import { QuizQuestion } from '../types';
-import { CheckCircle, XCircle, HelpCircle, ArrowRight } from 'lucide-react';
 
 interface QuizViewProps {
   questions: QuizQuestion[];
@@ -77,7 +77,7 @@ const QuizView: React.FC<QuizViewProps> = ({ questions }) => {
         <div className="space-y-3">
           {currentQuestion.options.map((option, idx) => {
             let className = "w-full p-4 rounded-xl border-2 text-left transition-all flex justify-between items-center ";
-            
+
             if (isAnswered) {
               if (idx === currentQuestion.correctIndex) {
                 className += "border-green-500 bg-green-50 text-green-700";

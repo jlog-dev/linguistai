@@ -1,7 +1,3 @@
-const BASE_URL = "https://api.minimax.chat/v1/t2a_v2";
-const API_KEY = import.meta.env.VITE_MINIMAX_API_KEY;
-
-
 interface MiniMaxResponse {
     base_resp: {
         status_code: number;
@@ -32,45 +28,21 @@ export async function generateSpeechFromMiniMax(
     text: string,
     voiceId: string = "French_MovieLeadFemale"
 ): Promise<string> {
-    if (!API_KEY) {
-        throw new Error("Missing VITE_MINIMAX_API_KEY");
-    }
-    const payload = {
-        model: "speech-2.6-hd",
-        text: text,
-        stream: false,
-        voice_setting: {
-            voice_id: voiceId,
-            speed: 1,
-            vol: 1,
-            pitch: 0,
-        },
-        audio_setting: {
-            sample_rate: 32000,
-            bitrate: 128000,
-            format: "mp3",
-            channel: 1,
-        },
-    };
-
     try {
-        const response = await fetch(`${BASE_URL}`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${API_KEY}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
+        const response = await fetch('/api/speech', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, voiceId }),
         });
 
         if (!response.ok) {
-            throw new Error(`MiniMax API Error: ${response.statusText}`);
+            throw new Error('Failed to fetch from backend API');
         }
 
         const result: MiniMaxResponse = await response.json();
 
         if (result.base_resp.status_code !== 0 || !result.data?.audio) {
-            throw new Error(`MiniMax Business Error: ${result.base_resp.status_msg}`);
+            throw new Error(`MiniMax Error: ${result.base_resp.status_msg}`);
         }
 
         const hexAudio = result.data.audio;

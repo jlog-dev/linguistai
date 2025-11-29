@@ -1,11 +1,11 @@
+import { Book, BrainCircuit, GraduationCap, RotateCcw } from 'lucide-react';
 import React, { useState } from 'react';
-import { LearningMaterial, ProficiencyLevel, AppState, Tab } from './types';
 import InputForm from './components/InputForm';
+import QuizView from './components/QuizView';
 import ReadingView from './components/ReadingView';
 import VocabCard from './components/VocabCard';
-import QuizView from './components/QuizView';
-import { Book, GraduationCap, BrainCircuit, RotateCcw } from 'lucide-react';
 import { generateLearningContentFromQwen } from './services/qianwenService';
+import { AppState, LearningMaterial, ProficiencyLevel, Tab } from './types';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>(AppState.SETUP);
@@ -21,6 +21,7 @@ const App: React.FC = () => {
       setMaterial(data);
       setState(AppState.LEARNING);
     } catch (error) {
+      console.error("Error generating learning content:", error);
       setState(AppState.ERROR);
       setErrorMsg("Failed to generate content. Please try a different topic or check your API key.");
     }
@@ -42,7 +43,7 @@ const App: React.FC = () => {
             <span className="font-bold text-xl tracking-tight text-slate-800">Linguist<span className="text-french-blue">AI</span></span>
           </div>
           {state === AppState.LEARNING && (
-            <button 
+            <button
               onClick={resetApp}
               className="text-sm font-medium text-slate-500 hover:text-french-blue flex items-center gap-2"
             >
@@ -55,7 +56,7 @@ const App: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex-grow flex flex-col items-center justify-center p-4">
-        
+
         {state === AppState.SETUP && (
           <div className="animate-fade-in w-full flex justify-center">
             <InputForm onSubmit={handleGenerate} isLoading={false} />
@@ -64,11 +65,11 @@ const App: React.FC = () => {
 
         {state === AppState.LOADING && (
           <div className="text-center animate-pulse">
-             <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 border border-slate-100 flex flex-col items-center">
-                <div className="w-16 h-16 border-4 border-french-blue border-t-transparent rounded-full animate-spin mb-6"></div>
-                <h3 className="text-xl font-bold text-slate-800">C'est parti!</h3>
-                <p className="text-slate-500 mt-2">Writing your story and preparing quiz...</p>
-             </div>
+            <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 border border-slate-100 flex flex-col items-center">
+              <div className="w-16 h-16 border-4 border-french-blue border-t-transparent rounded-full animate-spin mb-6"></div>
+              <h3 className="text-xl font-bold text-slate-800">C'est parti!</h3>
+              <p className="text-slate-500 mt-2">Writing your story and preparing quiz...</p>
+            </div>
           </div>
         )}
 
@@ -76,7 +77,7 @@ const App: React.FC = () => {
           <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg border-l-4 border-red-500">
             <h3 className="text-lg font-bold text-red-600 mb-2">Error</h3>
             <p className="text-slate-600 mb-6">{errorMsg}</p>
-            <button 
+            <button
               onClick={resetApp}
               className="text-sm font-semibold text-slate-500 hover:text-slate-800 underline"
             >
@@ -114,12 +115,12 @@ const App: React.FC = () => {
 
             {/* Content Area */}
             <div className="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-10 min-h-[600px]">
-              
+
               {activeTab === 'read' && (
-                <ReadingView 
-                  title={material.title} 
-                  frenchText={material.frenchText} 
-                  englishTranslation={material.englishTranslation} 
+                <ReadingView
+                  title={material.title}
+                  frenchText={material.frenchText}
+                  englishTranslation={material.englishTranslation}
                 />
               )}
 
