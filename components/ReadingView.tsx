@@ -1,5 +1,6 @@
+import { Eye, EyeOff, Loader2, Volume2 } from 'lucide-react';
 import React, { useState } from 'react';
-import { Volume2, Loader2, Eye, EyeOff } from 'lucide-react';
+import { generateSpeechFromMiniMax } from '../services/minimaxService.ts';
 
 interface ReadingViewProps {
   title: string;
@@ -12,9 +13,27 @@ const ReadingView: React.FC<ReadingViewProps> = ({ title, frenchText, englishTra
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handlePlayAudio = async () => {
-   // show alert that this feature is not implemented yet
-   alert("This feature is not implemented yet");
+    if (isPlaying) return;
+    setIsPlaying(true);
+    try {
+      const audioUrl = await generateSpeechFromMiniMax(frenchText);
+      const audio = new Audio(audioUrl);
+      audio.onended = () => {
+        setIsPlaying(false);
+        try {
+          URL.revokeObjectURL(audioUrl);
+        } catch (e) {
+          console.warn('Failed to revoke audio URL', e);
+        }
+      };
+      await audio.play();
+    } catch (err) {
+      console.error(err);
+      alert("Could not generate audio at this time.");
+      setIsPlaying(false);
+    }
   };
+
   return (
     <div className="animate-fade-in space-y-8">
       <div className="flex justify-between items-start border-b border-slate-100 pb-4">
@@ -42,10 +61,10 @@ const ReadingView: React.FC<ReadingViewProps> = ({ title, frenchText, englishTra
             onClick={() => setShowTranslation(!showTranslation)}
             className="text-french-blue text-sm font-medium flex items-center gap-2 hover:underline"
           >
-            {showTranslation ? <><EyeOff size={16}/> Hide</> : <><Eye size={16}/> Reveal</>}
+            {showTranslation ? <><EyeOff size={16} /> Hide</> : <><Eye size={16} /> Reveal</>}
           </button>
         </div>
-        
+
         {showTranslation ? (
           <p className="text-slate-600 leading-relaxed animate-fade-in">
             {englishTranslation}

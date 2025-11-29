@@ -1,14 +1,33 @@
+import { generateSpeechFromMiniMax } from '@/services/minimaxService';
+import { Loader2, Volume2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { VocabularyItem } from '../types';
-import { Volume2, Loader2 } from 'lucide-react';
 
 const VocabCard: React.FC<{ item: VocabularyItem }> = ({ item }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const playWord = async () => {
-    // show alert that this feature is not implemented yet
-    alert("This feature is not implemented yet");
+    if (isPlaying) return;
+    setIsPlaying(true);
+    try {
+      const audioUrl = await generateSpeechFromMiniMax(item.word);
+      const audio = new Audio(audioUrl);
+      audio.onended = () => {
+        setIsPlaying(false);
+        try {
+          URL.revokeObjectURL(audioUrl);
+        } catch (e) {
+          console.warn('Failed to revoke audio URL', e);
+        }
+      };
+      await audio.play();
+    } catch (err) {
+      console.error(err);
+      alert("Could not generate audio at this time.");
+      setIsPlaying(false);
+    }
   };
+
 
   return (
     <div className="bg-white rounded-xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
@@ -19,7 +38,7 @@ const VocabCard: React.FC<{ item: VocabularyItem }> = ({ item }) => {
             {item.type}
           </span>
         </div>
-        <button 
+        <button
           onClick={playWord}
           disabled={isPlaying}
           className="text-french-blue hover:text-blue-700 disabled:opacity-50"
@@ -27,9 +46,9 @@ const VocabCard: React.FC<{ item: VocabularyItem }> = ({ item }) => {
           {isPlaying ? <Loader2 size={20} className="animate-spin" /> : <Volume2 size={20} />}
         </button>
       </div>
-      
+
       <p className="text-slate-600 mb-3 border-b border-slate-50 pb-2">{item.translation}</p>
-      
+
       <div className="bg-blue-50/50 p-3 rounded-lg">
         <p className="text-sm text-slate-700 italic">
           "{item.contextSentence}"

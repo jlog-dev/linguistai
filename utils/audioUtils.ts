@@ -41,10 +41,10 @@ export async function playAudio(base64Audio: string, sampleRate = 24000): Promis
   try {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     const audioContext = new AudioContextClass({ sampleRate });
-    
+
     const byteArray = decodeBase64(base64Audio);
     const audioBuffer = await decodeAudioData(byteArray, audioContext, sampleRate, 1);
-    
+
     const source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(audioContext.destination);

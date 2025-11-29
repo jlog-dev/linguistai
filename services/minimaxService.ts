@@ -75,7 +75,6 @@ export async function generateSpeechFromMiniMax(
 
         const hexAudio = result.data.audio;
         const audioBuffer = hexToUint8Array(hexAudio);
-        // Use the Uint8Array directly when creating the Blob to avoid SharedArrayBuffer typing issues
         const blob = new Blob([audioBuffer as any], { type: "audio/mpeg" });
         const audioUrl = URL.createObjectURL(blob);
         return audioUrl;
