@@ -1,6 +1,6 @@
+import { BookOpen, Sparkles } from 'lucide-react';
 import React, { useState } from 'react';
 import { ProficiencyLevel } from '../types';
-import { BookOpen, Sparkles } from 'lucide-react';
 
 interface InputFormProps {
   onSubmit: (topic: string, level: ProficiencyLevel) => void;
